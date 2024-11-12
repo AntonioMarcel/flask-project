@@ -1,0 +1,205 @@
+{% extends "base.html" %} {% block content %}
+<h1>Registrar Notas Fiscais</h1>
+<form action="" method="post" novalidate>
+  {{ form.hidden_tag() }}
+  <p>
+    {{ form.processo_sei.label }}<br />
+    {{ form.processo_sei(size=32, id="processo-sei",
+    oninput="formatProcessoSei()") }}<br />
+    {% for error in form.processo_sei.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.doc_sei_nf.label }}<br />
+    {{ form.doc_sei_nf(size=32, id="doc-sei-nf", oninput="formatNumber(id)")
+    }}<br />
+    {% for error in form.doc_sei_nf.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.doc_sei_ateste.label }}<br />
+    {{ form.doc_sei_ateste(size=32, id="doc-sei-ateste",
+    oninput="formatNumber(id)") }}<br />
+    {% for error in form.doc_sei_ateste.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.doc_sei_conformidade.label }}<br />
+    {{ form.doc_sei_conformidade(size=32, id="doc-sei-conformidade",
+    oninput="formatNumber(id)") }}<br />
+    {% for error in form.doc_sei_conformidade.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.numero_nf.label }}<br />
+    {{ form.numero_nf(size=32, id="doc-sei-conformidade",
+    oninput="formatNumber(id)") }}<br />
+    {% for error in form.numero_nf.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.data_emissao.label }}<br />
+    {{ form.data_emissao() }}<br />
+    {% for error in form.data_emissao.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.data_entrada.label }}<br />
+    {{ form.data_entrada() }}<br />
+    {% for error in form.data_entrada.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <p>
+    {{ form.data_vencimento.label }}<br />
+    {{ form.data_vencimento() }}<br />
+    {% for error in form.data_vencimento.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <p>
+    {{ form.data_inicio_competencia.label }}<br />
+    {{ form.data_inicio_competencia() }}<br />
+    {% for error in form.data_inicio_competencia.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <p>
+    {{ form.data_fim_competencia.label }}<br />
+    {{ form.data_fim_competencia() }}<br />
+    {% for error in form.data_fim_competencia.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.masp.label }}<br />
+    {{ form.masp(size=32, id="masp", oninput="formatNumber(id)") }}<br />
+    {% for error in form.masp.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    <button type="button" onclick="fetchOrdenadorDespesas()">
+      Buscar Ordenador
+    </button>
+  </p>
+
+  <p>
+    {{ form.nome_ordenador.label }}<br />
+    {{ form.nome_ordenador(size=32, id="nome-ordenador") }}<br />
+  </p>
+
+  <p>
+    {{ form.observacoes.label }}<br />
+    {{ form.observacoes(rows=10, cols=50, id="observacoes-nf",
+    oninput="limitCharacters(id, 255)") }}<br />
+    {% for error in form.observacoes.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.municipio.label }}<br />
+    {{ form.municipio(size=32) }}<br />
+    {% for error in form.municipio.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.valor_nf.label }}<br />
+    {{ form.valor_nf(size=32, placeholder="R$00,00", id="valor-nf",
+    oninput="formatReais(id)") }}<br />
+    {% for error in form.valor_nf.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.ue.label }}<br />
+    {{ form.ue(size=32, id="ue") }}<br />
+    {% for error in form.ue.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.ano.label }}<br />
+    {{ form.ano(size=32, id="ano") }}<br />
+    {% for error in form.ano.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <p>
+    {{ form.empenho.label }}<br />
+    {{ form.empenho(size=32, id="empenho") }}<br />
+    {% for error in form.empenho.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    <button type="button" onclick="fetchEmpData()">Buscar Informações</button>
+  </p>
+
+  <p>
+    {{ form.gmi_fp.label }}<br />
+    {{ form.gmi_fp(size=32, id="gmi-fp") }}<br />
+  </p>
+  <p>
+    {{ form.nome_credor.label }}<br />
+    {{ form.nome_credor(size=50, id="nome-credor") }}<br />
+  </p>
+  <p>
+    {{ form.cnpj_cpf_credor.label }}<br />
+    {{ form.cnpj_cpf_credor(size=32, id="cnpj-cpf-credor") }}<br />
+  </p>
+  <p>
+    {{ form.conformidade.label }}<br />
+    {{ form.conformidade(size=32, id="conformidade", oninput="formatNumber(id)")
+    }}<br />
+    {% for error in form.conformidade.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <p>
+    {{ form.status.label }}<br />
+    {{ form.status() }}<br />
+    {% for error in form.status.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <p>
+    {{ form.banco.label }}<br />
+    {{ form.banco(size=32, id="banco", oninput="formatNumber(id)") }}<br />
+    {% for error in form.banco.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <p>
+    {{ form.agencia.label }}<br />
+    {{ form.agencia(size=32, id="agencia", oninput="formatNumber(id)") }}<br />
+    {% for error in form.agencia.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ form.conta.label }}<br />
+    {{ form.conta(size=32, id="conta", oninput="formatNumber(id)") }}<br />
+    {% for error in form.conta.errors %}
+    <span style="color: red">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+
+  <p>{{ form.submit() }}</p>
+</form>
+
+{% endblock %}

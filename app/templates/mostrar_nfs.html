@@ -1,0 +1,42 @@
+{% extends "base.html" %} {% block content %}
+<h1>Dados Notas Fiscais</h1>
+<table>
+  <thead>
+    <th>ID</th>
+    <th>Processo SEI</th>
+    <th>Doc. SEI NF</th>
+    <th>Doc. SEI Ateste</th>
+    <th>Doc. SEI Conformidade</th>
+    <th>Número da Nota Fiscal</th>
+    <th>Data de Emissão</th>
+    <th>Data de Entrada</th>
+    <th>Data de Vencimento</th>
+    <th>Data Início Competência</th>
+    <th>Data Fim Competência</th>
+    <th>Masp</th>
+    <th>Nome Ordenador</th>
+    
+    <th>GMI FP</th>
+  </thead>
+  <tbody>
+    {% for nf in dados_nfs %}
+    <tr>
+      <td>{{nf.id}}</td>
+      <td>{{nf.processo_sei}}</td>
+      <td>{{nf.doc_sei_nf}}</td>
+      <td>{{nf.doc_sei_ateste}}</td>
+      <td>{{nf.doc_sei_conformidade}}</td>
+      <td>{{nf.numero_nf}}</td>
+      <td>{{nf.data_emissao}}</td>
+      <td>{{nf.data_entrada}}</td>
+      <td>{{nf.data_vencimento}}</td>
+      <td>{{nf.data_inicio_competencia}}</td>
+      <td>{{nf.data_fim_competencia}}</td>
+      <td>{{nf.masp}}</td>
+      <td>{{nf.ordenador.nome}}</td>
+      <td>{{nf.dados_empenho.gmi_fp}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
