@@ -15,8 +15,20 @@
     <th>Data Fim Competência</th>
     <th>Masp</th>
     <th>Nome Ordenador</th>
-    
+    <th>Observações</th>
+    <th>Município</th>
+    <th>Valor NF</th>
+    <th>UE</th>
+    <th>Ano</th>
+    <th>Empenho</th>
     <th>GMI FP</th>
+    <th>Razão Social Credor</th>
+    <th>CNPJ/CPF Credor</th>
+    <th>Conformidade</th>
+    <th>Status</th>
+    <th>Banco</th>
+    <th>Agência</th>
+    <th>Conta</th>
   </thead>
   <tbody>
     {% for nf in dados_nfs %}
@@ -34,7 +46,20 @@
       <td>{{nf.data_fim_competencia}}</td>
       <td>{{nf.masp}}</td>
       <td>{{nf.ordenador.nome}}</td>
+      <td>{{nf.observacoes}}</td>
+      <td>{{nf.municipio}}</td>
+      <td>{{nf.valor_nf}}</td>
+      <td>{{nf.ue}}</td>
+      <td>{{nf.ano}}</td>
+      <td>{{nf.empenho}}</td>
       <td>{{nf.dados_empenho.gmi_fp}}</td>
+      <td>{{nf.dados_empenho.razao_social_credor}}</td>
+      <td>{{nf.dados_empenho.cnpj_cpf_credor}}</td>
+      <td>{{nf.conformidade}}</td>
+      <td>{{nf.status}}</td>
+      <td>{{nf.banco}}</td>
+      <td>{{nf.agencia}}</td>
+      <td>{{nf.conta}}</td>
     </tr>
     {% endfor %}
   </tbody>
