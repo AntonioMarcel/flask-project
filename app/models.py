@@ -16,6 +16,8 @@ class User(UserMixin, db.Model):
     password_hash: Mapped[Optional[str]] = mapped_column(String(256))
 
     posts: Mapped[List["Post"]] = relationship(back_populates='author')
+    
+    roles: Mapped[List["Role"]] = relationship(secondary="user_roles", back_populates="users")
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -26,6 +28,17 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f"<User {self.username}>"
 
+class Role(db.Model):
+    id = Mapped[int] = mapped_column(primary_key=True)
+    name = Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
+
+    users: Mapped[List["User"]] = relationship(secondary="user_roles", back_populates="roles")
+
+class UserRoles(db.Model):
+    __tablename__ = "user_roles"
+
+    user_id: Mapped[int] = mapped_column(ForeignKey(User.id), primary_key=True)
+    role_id: Mapped[int] = mapped_column(ForeignKey(Role.id), primary_key=True)
 
 class Post(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -39,6 +52,7 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"<Post {self.body}>"
+
 
 class OrdenadorDespesas(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -109,6 +123,9 @@ class DadosNfs(db.Model):
     masp: Mapped[str] = mapped_column(ForeignKey(OrdenadorDespesas.masp), index=True)
     ordenador: Mapped["OrdenadorDespesas"] = relationship(back_populates="dados_nfs")
 
+    @property
+    def formatted_valor_nf(self):
+            return f"R$ {self.valor_nf:,.2f}".replace(",", "TEMP").replace(".", ",").replace("TEMP", ".")
 
     # dados_empenho: Mapped["DadosEmpenhos"] = relationship(
     #     back_populates="dados_nfs",

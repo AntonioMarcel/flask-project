@@ -75,7 +75,7 @@ def registrar_nfs():
             
             # Converte Valor da NF para Float
             valor_nf = form.valor_nf.data 
-            valor_nf = valor_nf.replace("R$", "").replace(",",".")
+            valor_nf = valor_nf.replace("R$", "").replace(",",".").replace(".","")
             valor_nf = float(valor_nf)
 
             nf = DadosNfs(
@@ -110,11 +110,29 @@ def registrar_nfs():
     
     return render_template("registrar_nfs.html", title="Registrar Notas Fiscais", form=form)
 
+@app.route("/registrar_liquidacao", methods=["GET", "POST"])
+@login_required
+def registrar_liquidacao():
+    return render_template("registrar_liquidacao.html", title="Registrar Liquidação")
+
 @app.route("/mostrar_nfs", methods=["GET"])
+@login_required
 def mostrar_nfs():
     query = select(DadosNfs)
     dados_nfs = db.session.scalars(query).all()
     return render_template("mostrar_nfs.html", title="Mostrar Notas Fiscais", dados_nfs=dados_nfs)
+
+
+# @app.template_filter('format_reais')
+# def format_reais_filter(value):
+#     if value is None:
+#         return "R$ 0,00"
+#     # Format the number as currency in Brazilian format
+#     formatted = f"R$ {value:,.2f}".replace(",", "TEMP").replace(".", ",").replace("TEMP", ".")
+#     return formatted
+
+# then call in the template like this: 
+#      <!-- <td>{{nf.valor_nf | format_reais}}</td> -->
 
 
 
