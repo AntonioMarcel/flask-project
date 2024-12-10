@@ -29,8 +29,8 @@ class User(UserMixin, db.Model):
         return f"<User {self.username}>"
 
 class Role(db.Model):
-    id = Mapped[int] = mapped_column(primary_key=True)
-    name = Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
 
     users: Mapped[List["User"]] = relationship(secondary="user_roles", back_populates="roles")
 

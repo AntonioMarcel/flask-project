@@ -18,6 +18,7 @@ def index():
         {"author": {"username": "John"}, "body": "Beautiful day in Portland!"},
         {"author": {"username": "Susan"}, "body": "The Avengers movie was so cool!"},
     ]
+    print(current_user.roles[0].name)
     return render_template("index.html", title="Home", posts=posts)
 
 @app.route("/login", methods=["GET", "POST"])
