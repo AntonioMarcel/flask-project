@@ -7,6 +7,7 @@ from wtforms import (
     IntegerField,
     PasswordField,
     SelectField,
+    SelectMultipleField,
     StringField,
     SubmitField,
     TextAreaField,
@@ -22,7 +23,7 @@ from wtforms.validators import (
 )
 
 from app import db
-from app.models import User
+from app.models import User, Role
 
 
 class LoginForm(FlaskForm):
@@ -39,7 +40,19 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         "Repeat Password", validators=[DataRequired(), EqualTo("password")]
     )
+
     submit = SubmitField("Register")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Dynamically add a BooleanField for each role
+        roles = "teste"  # Query all roles from the database
+        print(roles)
+        #o erro tá por aqui
+        # for role in roles:
+        #     field_name = f"role_{role.id}"  # Unique field name for each role
+        #     self.__setattr__(field_name, BooleanField(role.name))
 
     def validate_username(self, username):
         user = db.session.scalar(select(User).where(User.username == username.data))

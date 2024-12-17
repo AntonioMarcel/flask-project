@@ -2,12 +2,17 @@ from urllib.parse import urlsplit
 
 from flask import flash, jsonify, redirect, render_template, request, url_for
 from flask_login import current_user, login_required, login_user, logout_user
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
 from app import app, db
 from app.forms import LoginForm, RegistrarNotasFiscaisForm, RegistrationForm
 from app.models import DadosEmpenhos, DadosNfs, OrdenadorDespesas, User
+from .utils.decorators import role_required
 
+@app.route('/admin')
+@role_required('Admin')
+def admin_dashboard():
+    return "Bem-vindo ao Painel do Administrador"
 
 @app.route("/")
 @app.route("/index")
@@ -53,8 +58,9 @@ def logout():
     return redirect(url_for("index"))
 
 
-@app.route("/register_user", methods=["GET", "POST"])
-def register_user():
+# Route for new users registering themselves
+@app.route("/add_user", methods=["GET", "POST"])
+def add_user():
     if current_user.is_authenticated:
         return redirect(url_for("index"))
     form = RegistrationForm()
@@ -65,7 +71,40 @@ def register_user():
         db.session.commit()
         flash("Congratulations, you are now a registered user!")
         return redirect(url_for("login"))
-    return render_template("register_user.html", title="Register", form=form)
+    return render_template("add_user.html", title="Register", form=form)
+
+# Route for admins registering new users
+@app.route("/add_user_admin", methods=["GET", "POST"])
+@role_required('Admin')
+def add_user_admin():
+    form = RegistrationForm()
+    print([field.name for field in form])  # Check if the role fields are being added
+
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash("Congratulations, you are now a registered user!")
+        return redirect(url_for("login"))
+    return render_template("add_user.html", title="Register", form=form)
+
+
+
+
+@app.route("/delete_user", methods=["GET", "POST"])
+@role_required("Admin")
+def delete_user():
+    user_id = request.args.get("userId")  # Obtém o valor MASP passado na URL como parâmetro
+    if user_id:        
+        query = delete(User).where(User.id == user_id)
+        db.session.execute(query)
+        db.session.commit()
+        flash("Successfully removed user from User table.")
+    else:
+        flash("No user id provided.")
+    return redirect(url_for("index"))
+
 
 @app.route("/registrar_nfs", methods=["GET", "POST"])
 @login_required
@@ -123,6 +162,12 @@ def mostrar_nfs():
     dados_nfs = db.session.scalars(query).all()
     return render_template("mostrar_nfs.html", title="Mostrar Notas Fiscais", dados_nfs=dados_nfs)
 
+@app.route("/list_users", methods=["GET"])
+@role_required('Admin')
+def list_users():
+    query = select(User)
+    users = db.session.scalars(query).all()
+    return render_template("list_users.html", title="Listar usuários", users=users )
 
 # @app.template_filter('format_reais')
 # def format_reais_filter(value):

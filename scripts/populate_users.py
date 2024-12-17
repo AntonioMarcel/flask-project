@@ -43,3 +43,5 @@ with app.app_context():
         db.session.add(u)
 
     db.session.commit()
+
+    #modify for accepting more than one role

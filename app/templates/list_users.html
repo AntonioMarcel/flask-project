@@ -1,0 +1,24 @@
+{% extends "base.html"%} {% block content %}
+<h1>Dados Notas Fiscais</h1>
+<div><a href="{{url_for('add_user_admin')}}">Add User</a></div>
+
+<table>
+  <thead>
+    <th>ID</th>
+    <th>Username</th>
+    <th>E-mail</th>
+    <th>Perfil</th>
+    <th>Ação</th>
+  </thead>
+  <tbody>
+    {% for user in users%}
+    <tr>
+      <td>{{user.id}}</td>
+      <td>{{user.username}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.roles[0].name}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{%endblock%}
