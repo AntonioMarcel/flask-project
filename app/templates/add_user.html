@@ -33,13 +33,13 @@
             {% endfor %}
         </p>
         
-        <h4>Assign Roles</h4>
+        <!-- <h4>Assign Roles</h4>
         {% for field in form if field.name.startswith("role_") %}
             <div>
                 {{ field.label }}: 
                 {{ field() }}
             </div>
-        {% endfor %}
+        {% endfor %} -->
         
         <p>{{ form.submit() }}</p>
     </form>

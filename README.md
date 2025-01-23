@@ -19,3 +19,9 @@ SELECT * FROM dados_nfs dn INNER JOIN dados_empenhos de ON de.ue = dn.ue AND de.
 fazer validações para quando:
 usuário enviar formulário e não encontrar correspondência para ordenador ou ue/ano/empenho
 ideia > deixar mostrando o nome do ordenador e o nome do credor e de forma automática, sem o usuário clicar no botão# flask-project
+
+setting up the project:
+create/activate venv (obs: remove venv when pushing)
+install requirements.txt
+install sqlite vscode extension
+install python vscode extension

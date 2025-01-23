@@ -97,12 +97,19 @@ class DadosNfs(db.Model):
     data_fim_competencia: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     # masp: Mapped[str] = mapped_column(String(32), index=True)
     # nome_ordenador: Mapped[str] = mapped_column(String(255), index=True)
+    masp: Mapped[str] = mapped_column(ForeignKey(OrdenadorDespesas.masp), index=True)
     observacoes: Mapped[str] = mapped_column(String(255))
     municipio: Mapped[str] = mapped_column(String(255))
     valor_nf: Mapped[float] = mapped_column(Float)
     ue: Mapped[str] = mapped_column(String(32), index=True)
     ano: Mapped[str] = mapped_column(String(32), index=True)
     empenho: Mapped[str] = mapped_column(String(32), index=True)
+
+    __table_args__ = (
+        ForeignKeyConstraint(['ue', 'ano', 'empenho'],
+                             [DadosEmpenhos.ue, DadosEmpenhos.ano, DadosEmpenhos.empenho], "dados_empenho_fk"),
+    )
+
     # gmi_fp: Mapped[str] = mapped_column(String(32), index=True)
     # nome_credor: Mapped[str] = mapped_column(String(255), index=True)
     # cnpj_cpf_credor: Mapped[str] = mapped_column(String(32), index=True)
@@ -112,16 +119,8 @@ class DadosNfs(db.Model):
     agencia: Mapped[str] = mapped_column(String(32), index=True)
     conta: Mapped[str] = mapped_column(String(32), index=True)
 
-
-    __table_args__ = (
-        ForeignKeyConstraint(['ue', 'ano', 'empenho'],
-                             [DadosEmpenhos.ue, DadosEmpenhos.ano, DadosEmpenhos.empenho], "dados_empenho_fk"),
-    )
-
-    dados_empenho: Mapped["DadosEmpenhos"] = relationship(back_populates="dados_nfs")
-
-    masp: Mapped[str] = mapped_column(ForeignKey(OrdenadorDespesas.masp), index=True)
     ordenador: Mapped["OrdenadorDespesas"] = relationship(back_populates="dados_nfs")
+    dados_empenho: Mapped["DadosEmpenhos"] = relationship(back_populates="dados_nfs")
 
     @property
     def formatted_valor_nf(self):

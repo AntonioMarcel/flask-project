@@ -43,12 +43,12 @@ class RegistrationForm(FlaskForm):
 
     submit = SubmitField("Register")
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
 
-        # Dynamically add a BooleanField for each role
-        roles = "teste"  # Query all roles from the database
-        print(roles)
+    #     # Dynamically add a BooleanField for each role
+    #     roles = "teste"  # Query all roles from the database
+    #     print(roles)
         #o erro tá por aqui
         # for role in roles:
         #     field_name = f"role_{role.id}"  # Unique field name for each role

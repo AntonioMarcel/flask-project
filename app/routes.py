@@ -35,6 +35,7 @@ def login():
         user = db.session.scalar(
             select(User).where(User.username == form.username.data)
         )
+        print(user.check_password)
         if user is None or not user.check_password(form.password.data):
             flash("Invalid username or password")
             return redirect(url_for("login"))
@@ -146,7 +147,7 @@ def registrar_nfs():
             db.session.add(nf)
             db.session.commit()
             flash("Document successfully added!")
-            return redirect(url_for("login"))
+            return redirect(url_for("index"))
     
     return render_template("registrar_nfs.html", title="Registrar Notas Fiscais", form=form)
 

@@ -26,7 +26,7 @@ function fetchEmpData() {
   fetch(`/get_emp_data?ue=${ue}&ano=${ano}&empenho=${empenho}`)
     .then((response) => response.json())
     .then((data) => {
-      if (ue && ano && empenho) {
+      if (data.gmi_fp && data.nome_credor && data.cpnj_cpf_credor) {
         gmiFp.value = data.gmi_fp;
         nomeCredor.value = data.nome_credor;
         cnpjCpfCredor.value = data.cpnj_cpf_credor;
@@ -35,10 +35,6 @@ function fetchEmpData() {
         nomeCredor.value = data.error;
         cnpjCpfCredor.value = data.error;
       }
-
-      // console.log(data);
-      // console.log(data.cpnj_cpf_credor);
-      //        cnpjCpfCredor.value = data.cnpj_cpf_credor;
     })
     .catch((error) => console.log(error));
 }
